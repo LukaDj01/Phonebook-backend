@@ -1,51 +1,31 @@
 import { Injectable } from '@nestjs/common';
-import { User } from 'src/models/user';
+import { InjectRepository } from '@nestjs/typeorm';
+import { UserDto } from 'src/models/user.dto';
+import { User } from 'src/models/user.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class UsersService {
-    list: User[] = [
-        {
-            id: 1,
-            firstName: "Milos",
-            lastName: "Lazarevic",
-            phoneNumber: "069123456",
-            email: "milos12@gmail.com"
-        },
-        {
-            id: 2,
-            firstName: "Danica",
-            lastName: "Djordjevic",
-            phoneNumber: "062338228",
-            email: "danidj@gmail.com"
-        },
-        {
-            id: 3,
-            firstName: "Lazar",
-            lastName: "Stankovic",
-            phoneNumber: "069525812",
-            email: "lazaaa11@gmail.com"
-        },
-        {
-            id: 4,
-            firstName: "Stefan",
-            lastName: "Bojkovic",
-            phoneNumber: "060250491",
-            email: "stefkob@gmail.com"
-        },
-        {
-            id: 5,
-            firstName: "Ivana",
-            lastName: "Ivanovic",
-            phoneNumber: "061515121",
-            email: "ivanov@gmail.com"
-        }
-    ];
+    constructor(@InjectRepository(User) private userRepository: Repository<User>) {}
 
     public getAll() {
-        return this.list;
+        return this.userRepository.find();
     }
 
     public getById(id: number) {
-        return this.list.find((user) => user.id === id);
+        return this.userRepository.findOne({where: {id}});
+    }
+
+    public async create(userDto: UserDto){
+        const user = this.userRepository.create(userDto);
+        return await this.userRepository.save(user);
+    }
+
+    public async delete(id: number){
+        return await this.userRepository.delete(id);
+    }
+
+    public async update(id: number, dto: UserDto){
+        return await this.userRepository.update(id, dto);
     }
 }

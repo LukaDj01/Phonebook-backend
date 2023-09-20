@@ -1,5 +1,4 @@
-export interface User {
-    id: number;
+export class UserDto {
     firstName: string;
     lastName: string;
     phoneNumber: string;
