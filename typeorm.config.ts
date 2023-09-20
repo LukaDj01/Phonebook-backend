@@ -1,4 +1,6 @@
-import { User } from "src/models/user.entity";
+import { AdditionalInfos } from "src/entities/additional-infos.entity";
+import { Phone } from "src/entities/phone.entity";
+import { User } from "src/entities/user.entity";
 import { ConnectionOptions } from "typeorm";
 
 
@@ -9,6 +11,6 @@ export const typeOrmConfig: ConnectionOptions = {
     username: 'postgres',
     password: 'mysecretpassword',
     database: 'users',
-    entities: [User],
+    entities: [User, AdditionalInfos, Phone],
     synchronize: true
 }
