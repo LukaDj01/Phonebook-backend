@@ -13,7 +13,7 @@ export class UsersService {
     }
 
     public getById(id: number) {
-        return this.userRepository.findOne({where: {id}});
+        return this.userRepository.findOneBy({id});
     }
 
     public async create(userDto: UserDto){
