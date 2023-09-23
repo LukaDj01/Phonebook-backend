@@ -41,7 +41,9 @@ export class AuthService {
         return from(this.userRepository.findOne({ 
             where: { email },
             select: ['id', 'firstName', 'lastName',
-            'email', 'password'] })).pipe(
+            'email', 'password'],
+            relations: ['additionalInfos', 'phones']
+            })).pipe(
                 switchMap((user: User) => 
                     from(bcrypt.compare(password, user.password)).pipe(
                         map((isValidPassword: boolean) => {
