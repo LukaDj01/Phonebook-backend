@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UserDto } from 'src/dto/user.dto';
+import { PhoneDto } from 'src/dto/phone.dto';
 
 @Controller('users')
 export class UsersController {
@@ -30,4 +31,11 @@ export class UsersController {
     public updateUser(@Param("id", ParseIntPipe) id: number, @Body() dto: UserDto){
         return this.usersService.update(id, dto);
     }
+
+    @Post(':id')
+    public addPhone(@Param('id', ParseIntPipe) userId: number, @Body() dto: PhoneDto){
+        return this.usersService.addPhoneNumber(userId, dto);
+    }
+
+    
 }
