@@ -27,14 +27,19 @@ export class UsersController {
         return this.usersService.delete(id);
     }
 
-    @Put(":id")
-    public updateUser(@Param("id", ParseIntPipe) id: number, @Body() dto: UserDto){
-        return this.usersService.update(id, dto);
+    @Put(":userId/:addInfosId")
+    public updateUser(@Param("userId", ParseIntPipe) userId: number, @Param("addInfosId", ParseIntPipe) addInfosId: number, @Body() dto: UserDto){
+        return this.usersService.update(userId, addInfosId, dto);
     }
 
     @Post(':id')
     public addPhone(@Param('id', ParseIntPipe) userId: number, @Body() dto: PhoneDto){
         return this.usersService.addPhoneNumber(userId, dto);
+    }
+
+    @Delete("removePhone/:phoneId/:userId")
+    public removePhone(@Param("phoneId", ParseIntPipe) phoneId: number, @Param("userId", ParseIntPipe) userId: number){
+        return this.usersService.removePhoneNumber(phoneId, userId);
     }
 
     

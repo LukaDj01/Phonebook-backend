@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PhoneDto } from 'src/dto/phone.dto';
 import { UserDto } from 'src/dto/user.dto';
+import { AdditionalInfos } from 'src/entities/additional-infos.entity';
 import { Phone } from 'src/entities/phone.entity';
 import { User } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
@@ -10,7 +11,8 @@ import { Repository } from 'typeorm';
 export class UsersService {
     constructor(
         @InjectRepository(User) private userRepository: Repository<User>,
-        @InjectRepository(Phone) private phoneRepository: Repository<Phone>
+        @InjectRepository(Phone) private phoneRepository: Repository<Phone>,
+        @InjectRepository(AdditionalInfos) private addInfosRepository: Repository<AdditionalInfos>
         ) {}
 
     public getAll() {
@@ -35,8 +37,18 @@ export class UsersService {
         return await this.userRepository.delete(id);
     }
 
-    public async update(id: number, dto: UserDto){
-        return await this.userRepository.update(id, dto);
+    public async update(userId: number, addInfosId: number, dto: UserDto){
+        const userDto = {
+            firstName: dto.firstName,
+            lastName: dto.lastName
+        }
+        const addInfosDto = {
+            birthDate: dto.additionalInfos.birthDate,
+            description: dto.additionalInfos.description
+        }
+        await this.addInfosRepository.update(addInfosId, addInfosDto);
+        await this.userRepository.update(userId, userDto);
+        return await this.getById(userId);
     }
 
     public async addPhoneNumber(userId: number, phoneDto: PhoneDto){
@@ -44,5 +56,10 @@ export class UsersService {
         let user = await this.getById(userId);
         user.phones.push(phone);
         return await this.userRepository.save(user);
+    }
+
+    public async removePhoneNumber(phoneId: number, userId: number){
+        await this.phoneRepository.delete(phoneId);
+        return await this.getById(userId);
     }
 }
