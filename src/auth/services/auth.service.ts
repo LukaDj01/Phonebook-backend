@@ -26,7 +26,10 @@ export class AuthService {
             switchMap((hashedPassword: string) => {
                 return from(this.userRepository.save({
                     ...user,
-                    password: hashedPassword
+                    password: hashedPassword,
+                    additionalInfos: {
+                        
+                    }
                 })).pipe(
                     map((user: User) => {
                         delete user.password;

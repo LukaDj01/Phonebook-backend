@@ -42,5 +42,10 @@ export class UsersController {
         return this.usersService.removePhoneNumber(phoneId, userId);
     }
 
+    @Get('search/:string')
+    public getUsersByName(@Param("string") string: string){
+        return this.usersService.getUsersByName(string);
+    }
+
     
 }

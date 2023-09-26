@@ -5,9 +5,9 @@ export class AdditionalInfos {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column( { default: null } )
     birthDate: Date;
 
-    @Column()
+    @Column( { default: "" } )
     description: string;
 }

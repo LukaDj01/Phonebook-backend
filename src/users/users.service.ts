@@ -62,4 +62,18 @@ export class UsersService {
         await this.phoneRepository.delete(phoneId);
         return await this.getById(userId);
     }
+
+    public async getUsersByName(string: string) {
+        let users2: User[] = [];
+        const users: User[] = await this.getAll();
+        if (string !== "") {
+            users.forEach((user: User) => {
+                let name = user.firstName + " " + user.lastName;
+                name = name.toLowerCase();
+                if (name.indexOf(string) !== -1) users2.push(user);
+            });
+            return users2;
+        }
+        else return users;
+    }
 }
